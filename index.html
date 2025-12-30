@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* O asterisco (*) significa "TODOS OS ELEMENTOS". 
+   É um reset global.
+*/
+        * {
+            /* Essa é a regra mais importante do CSS moderno! 
+       Faz com que o Padding (enchimento) e a Borda contem DENTRO do tamanho do elemento.
+       Sem isso, se você tem uma caixa de 100px e poe borda de 10px, ela vira 120px e quebra o layout.
+       Com isso, ela continua tendo 100px.
+    */
+            box-sizing: border-box;
+
+            /* Tira a linha azul padrão que o Chrome coloca quando clica */
+            outline: none;
+        }
+
+        body {
+            /* Cores em Hexadecimal. #121212 é um preto "suave" (Dark Mode) */
+            background-color: #121212;
+            color: #e0e0e0;
+            /* Cinza bem claro para o texto (ler branco puro cansa a vista) */
+
+            /* Fontes modernas do sistema */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            /* --- O TRUQUE DE CENTRALIZAR TUDO NA TELA --- */
+            display: flex;
+            /* Ativa o Flexbox (o organizador de elementos) */
+            justify-content: center;
+            /* Alinha horizontalmente no centro */
+            align-items: center;
+            /* Alinha verticalmente no centro */
+
+            /* 100vh = 100% da Viewport Height (Altura da Janela) */
+            /* Garante que o fundo preto cubra a tela toda, mesmo se tiver pouco conteúdo */
+            min-height: 100vh;
+
+            /* Tira a margem branca que os navegadores colocam por padrão */
+            margin: 0;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            /* Um cinza um pouco mais claro que o fundo */
+            padding: 40px;
+            /* Espaço interno (respiro) de 40px em todos os lados */
+            border-radius: 16px;
+            /* Arredonda os cantos da caixa */
+
+            width: 100%;
+            /* Tenta ocupar 100% do espaço disponível */
+            max-width: 450px;
+            /* MAS... para de crescer se chegar em 450px (bom para celular e PC) */
+
+            /* Sombra projetada: X(0) Y(15px) Borrão(35px) Cor(Preto com transparência 0.6) */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+
+            border: 1px solid #333;
+            /* Uma borda fina sutil */
+        }
+
+        h2 {
+            text-align: center;
+            /* Texto no meio */
+            margin-bottom: 30px;
+            /* Empurra o que tiver embaixo pra longe */
+            color: #00e676;
+            /* Verde Neon */
+            letter-spacing: 1px;
+            /* Espaçamento entre as letras (Fica elegante) */
+        }
+
+        /* Estilizando os títulos pequenos (Tipo de Despesa, Valor) */
+        h3 {
+            font-size: 14px;
+            /* Texto pequeno */
+            color: #aaaaaa;
+            /* Texto cinza (menos destaque) */
+            margin-bottom: 8px;
+            /* Coladinho no input de baixo */
+            margin-top: 20px;
+            /* Longe do input de cima */
+            text-transform: uppercase;
+            /* FORÇA TUDO PARA MAIÚSCULO AUTOMATICAMENTE */
+            letter-spacing: 1px;
+            font-weight: 600;
+            /* Espessura da fonte (meio negrito) */
+        }
+
+        /* Estilo dos campos de digitar */
+        input {
+            width: 100%;
+            /* Ocupa a largura total do container */
+            padding: 12px 15px;
+            /* Enchimento para o texto não colar na borda */
+            background-color: #2c2c2c;
+            /* Fundo do input */
+            border: 2px solid transparent;
+            /* Borda transparente (pra não pular quando focar) */
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+
+            /* --- ANIMAÇÃO --- */
+            transition: 0.3s;
+            /* Qualquer mudança nesse elemento vai demorar 0.3seg para acontecer */
+        }
+
+        /* O que acontece quando clica dentro do input (:focus) */
+        input:focus {
+            border-color: #00e676;
+            /* A borda fica verde */
+            background-color: #333;
+            /* O fundo clareia levemente */
+        }
+
+        /* Botão Principal */
+        #btn-enviar {
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background-color: #00e676;
+            color: #121212;
+            /* Texto preto para dar contraste no verde */
+            border: none;
+            /* Remove borda padrão feia */
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            /* Transforma a setinha do mouse em "Mãozinha" 👆 */
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        /* O que acontece quando passa o mouse em cima (:hover) */
+        #btn-enviar:hover {
+            background-color: #00c853;
+            /* Verde um pouco mais escuro */
+
+            /* Efeito visual de movimento */
+            transform: translateY(-2px);
+            /* Move o botão 2 pixels para CIMA */
+            box-shadow: 0 5px 15px rgba(0, 230, 118, 0.3);
+            /* Sombra brilhante verde */
+        }
+
+        /* Estilo da Lista (UL) */
+        ul {
+            list-style: none;
+            /* Remove as bolinhas (bullets) da lista */
+            padding: 0;
+            margin-top: 30px;
+
+            /* Rolagem */
+            max-height: 300px;
+            /* Altura máxima da lista */
+            overflow-y: auto;
+            /* Se passar de 300px, cria barra de rolagem vertical automaticamente */
+        }
+
+        /* Estilo de cada item da lista (LI) */
+        li {
+            background-color: #2c2c2c;
+            padding: 15px;
+            margin-bottom: 10px;
+            /* Espaço entre um item e outro */
+            border-radius: 8px;
+
+            /* Usando Flexbox DENTRO do item para alinhar texto e botão */
+            display: flex;
+            justify-content: space-between;
+            /* Um item na esquerda, outro na direita, espaço no meio */
+            align-items: center;
+            /* Alinha verticalmente */
+
+            border-left: 5px solid #00e676;
+            /* Aquela barrinha verde na esquerda do card */
+
+            /* Chama a animação criada lá embaixo */
+            animation: surgir 0.5s ease;
+        }
+
+        /* --- CRIANDO UMA ANIMAÇÃO (Keyframes) --- */
+        @keyframes surgir {
+
+            /* Estado Inicial */
+            from {
+                opacity: 0;
+                /* Invisível */
+                transform: translateY(10px);
+                /* Um pouco pra baixo */
+            }
+
+            /* Estado Final */
+            to {
+                opacity: 1;
+                /* Visível */
+                transform: translateY(0);
+                /* Posição original */
+            }
+        }
+
+        /* Preço do item */
+        li span:nth-child(2) {
+            font-weight: bold;
+            color: #fff;
+            margin-right: auto;
+            /* Truque do Flexbox: Empurra tudo que está a direita para longe */
+            margin-left: 15px;
+        }
+
+        /* Botão de Excluir */
+        .btn-delete {
+            background-color: #ff5252;
+            /* Vermelho suave */
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #ff1744;
+            /* Vermelho forte */
+        }
+
+        /* --- CUSTOMIZANDO A BARRA DE ROLAGEM (Funciona no Chrome/Edge) --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            /* Largura da barra */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+            /* Cor do trilho por onde a barra corre */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            /* Cor da barra em si */
+            border-radius: 4px;
+        }
+
+        /* Caixa do Total */
+        .box-total {
+            background-color: #2c2c2c;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .box-total h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #e0e0e0;
+        }
+
+        /* O número em si (o span) */
+        #valor-total {
+            color: #00e676;
+            /* Verde Dinheiro */
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>💰 Controle de Gastos</h2>
+        <div class="box-total">
+            <h3>TOTAL: R$ <span id="valor-total">0.00</span></h3>
+        </div>
+        <form class="form-control">
+            <h3>Tipo de Despesa</h3>
+            <input id="input-tipo" placeholder="Ex: Uber...">
+            <h3>Valor Gasto</h3>
+            <input id="input-valor" type="" placeholder="Ex: 100.00">
+            <button id="btn-enviar" type="submit">Enviar</button>
+            <ul id="lista"></ul>
+        </form>
+    </div>
+    <script>
+        const form = document.querySelector('.form-control')
+        const input_descricao = document.getElementById('input-tipo')
+        const input_valor = document.getElementById('input-valor')
+        const linhaTabela = document.getElementById('lista')
+
+        const valorTotal = 0
+        const listaGastos = []
+
+        form.addEventListener('submit', function (evento) {
+
+            evento.preventDefault()
+            salvarGasto()
+
+        })
+
+        function salvarGasto() {
+
+            const descricao = input_descricao.value
+            const valor = Number(input_valor.value)
+
+            if (descricao === '' || valor === '') {
+                return
+            }
+
+            const gasto = {
+                id: Date.now(),
+                nome: descricao,
+                preco: valor
+            }
+
+            listaGastos.push(gasto)
+
+            form.reset()
+            mostrarListaGastos()
+            atualizarTotal()
+        }
+
+        function mostrarListaGastos() {
+
+            linhaTabela.innerHTML = ''
+
+            listaGastos.forEach(item => {
+
+                linhaTabela.innerHTML += `
+                <li id="${item.id}">
+                    <span>${item.nome}</span> 
+                    <span>${item.preco}</span>
+                    <button class="btn-delete">🗑️</button>  
+                </li>
+                `
+
+            });
+        }
+        function atualizarTotal() {
+            // Ele pega o 'acumulador' (começa em 0) e soma com o preço do item atual
+            const total = listaGastos.reduce((acumulador, item) => {
+                return acumulador + item.preco
+            }, 0)
+            // Joga na tela com 2 casas decimais
+            elementoTotal.innerText = total.toFixed(2)
+        }
+    </script>
+</body>
+
+</html>
